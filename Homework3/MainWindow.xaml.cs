@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Data;
 using System.Data.Linq;
-using System.Linq;
 using System.Windows;
 
 namespace Homework3
@@ -99,9 +97,8 @@ namespace Homework3
 
         private void updateButton_Click(object sender, RoutedEventArgs e)
         {
-            _isInsert = false;
+            BringToInitialCondition();
             _isUpdate = true;
-            _isDelete = false;
 
             continentsButton.IsEnabled = true;
             countriesButton.IsEnabled = true;
@@ -130,7 +127,6 @@ namespace Homework3
             {
                 label1.Content = "Continent name";
                 textBox1.IsEnabled = true;
-                saveButton.IsEnabled = true;
 
                 textBox2.Text = String.Empty;
                 textBox3.Text = String.Empty;
@@ -148,10 +144,32 @@ namespace Homework3
                 label5.Content = "N/A";
             }
 
+            else if (_isUpdate)
+            {
+                label1.Content = "Continent id to update";
+                textBox1.IsEnabled = true;
+                label2.Content = "New continent name";
+                textBox2.IsEnabled = true;
+
+                textBox3.Text = String.Empty;
+                textBox4.Text = String.Empty;
+                textBox5.Text = String.Empty;
+
+                textBox3.IsEnabled = false;
+                textBox4.IsEnabled = false;
+                textBox5.IsEnabled = false;
+
+                label3.Content = "N/A";
+                label4.Content = "N/A";
+                label5.Content = "N/A";
+            }
+            
+            saveButton.IsEnabled = true;
             _isContinents = true;
             _isCountries = false;
             _isCities = false;
         }
+
 
         private void countriesButton_Click(object sender, RoutedEventArgs e)
         {
@@ -175,11 +193,33 @@ namespace Homework3
                 label5.Content = "N/A";
             }
 
+            else if (_isUpdate)
+            {
+                MessageBox.Show("Leave text box empty if no change in this column", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 
+                label1.Content = "Country id to update";
+                textBox1.IsEnabled = true;
+                label2.Content = "New country name";
+                textBox2.IsEnabled = true;
+                label3.Content = "New continent id";
+                textBox3.IsEnabled = true;
+                label4.Content = "New area";
+                textBox4.IsEnabled = true;
+
+
+                textBox5.Text = String.Empty;
+
+                textBox5.IsEnabled = false;
+
+                label5.Content = "N/A";
+            }
+            
+            saveButton.IsEnabled = true;
             _isCountries = true;
             _isContinents = false;
             _isCities = false;
         }
+
 
         private void citiesButton_Click(object sender, RoutedEventArgs e)
         {
@@ -199,6 +239,24 @@ namespace Homework3
                 label5.Content = "N/A";
             }
 
+            else if (_isUpdate)
+            {
+                MessageBox.Show("Leave text box empty if no change in this column", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                label1.Content = "City id to update";
+                textBox1.IsEnabled = true;
+                label2.Content = "New city name";
+                textBox2.IsEnabled = true;
+                label3.Content = "New country id";
+                textBox3.IsEnabled = true;
+                label4.Content = "New population";
+                textBox4.IsEnabled = true;
+                label5.Content = "Is capital(1-yes/0-no)";
+                textBox5.IsEnabled = true;
+
+            }
+
+            saveButton.IsEnabled = true;
             _isCities = true;
             _isCountries = false;
             _isContinents = false;
@@ -210,31 +268,113 @@ namespace Homework3
         {
             if (_isInsert)
             {
-                if (_isContinents && textBox1.Text != String.Empty)
-                    _tc.InsertContinent(textBox1.Text);
+                SaveInsert();
+            }
 
-                else if (_isCountries && textBox1.Text != String.Empty && textBox2.Text != String.Empty && textBox3.Text != String.Empty)
-                {
-                    try {
-                        _tc.InsertCountry(textBox1.Text, Int32.Parse(textBox2.Text), float.Parse(textBox3.Text));
-                    }
-                    catch (Exception ex)                    {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-                else if (_isCities && textBox1.Text != String.Empty && textBox2.Text != String.Empty && textBox3.Text != String.Empty && textBox4.Text != String.Empty)
-                {
-                    try {
-                        _tc.InsertCity(textBox1.Text, Int32.Parse(textBox2.Text), Int32.Parse(textBox3.Text), Int32.Parse(textBox4.Text));
-                    }
-                    catch (Exception ex) {
-                        MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
+            else if (_isUpdate)
+            {
+                SaveUpdate();
             }
 
             BringToInitialCondition();
         }
+
+        private void SaveInsert()
+        {
+            if (_isContinents && textBox1.Text != String.Empty)
+            {
+                _tc.InsertContinent(textBox1.Text);
+            }
+
+            else if (_isCountries && textBox1.Text != String.Empty && textBox2.Text != String.Empty && textBox3.Text != String.Empty)
+            {
+                try
+                {
+                    _tc.InsertCountry(textBox1.Text, Int32.Parse(textBox2.Text), float.Parse(textBox3.Text));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else if (_isCities && textBox1.Text != String.Empty && textBox2.Text != String.Empty && textBox3.Text != String.Empty && textBox4.Text != String.Empty)
+            {
+                try
+                {
+                    _tc.InsertCity(textBox1.Text, Int32.Parse(textBox2.Text), Int32.Parse(textBox3.Text), Int32.Parse(textBox4.Text));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void SaveUpdate()
+        {
+            if (_isContinents && textBox1.Text != String.Empty && textBox2.Text != String.Empty)
+            {
+                try
+                {
+                    _tc.UpdateContinent(Int32.Parse(textBox1.Text), textBox2.Text);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            else if (_isCountries && textBox1.Text != String.Empty)
+            {
+                try
+                {
+                    int continentId;
+                    int area;
+
+                    if (textBox3.Text == String.Empty) continentId = -1;
+                    else continentId = Int32.Parse(textBox3.Text);
+
+                    if (textBox4.Text == String.Empty) area = -1;
+                    else area = Int32.Parse(textBox4.Text);
+
+                    _tc.UpdateCountry(Int32.Parse(textBox1.Text), textBox2.Text, continentId, area);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+
+            else if (_isCities && textBox1.Text != String.Empty)
+            {
+                try
+                {
+                    int countryId;
+                    int population;
+                    int iscapital;
+
+                    if (textBox3.Text == String.Empty) countryId = -1;
+                    else countryId = Int32.Parse(textBox3.Text);
+
+                    if (textBox4.Text == String.Empty) population = -1;
+                    else population = Int32.Parse(textBox4.Text);
+
+                    if (textBox5.Text == String.Empty) iscapital = -1;
+                    else iscapital = Int32.Parse(textBox5.Text);
+
+                    _tc.UpdateCity(Int32.Parse(textBox1.Text), textBox2.Text, countryId, population, iscapital);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+
+
+        }
+
 
         private void BringToInitialCondition()
         {
@@ -270,6 +410,6 @@ namespace Homework3
             _isContinents = false;
         }
 
-        
+
     }
 }

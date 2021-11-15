@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Windows;
 
 namespace Homework3
@@ -152,16 +153,23 @@ namespace Homework3
 
         public void InsertCountry(string countryName, int continentId, float area)
         {
-            WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+            try
+            {
+                WorldDbDataContext db = new WorldDbDataContext(_connectionString);
 
-            Country country = new Country();
-            country.CountryName = countryName;
-            country.ContinentId = continentId;
-            country.Area = area;
+                Country country = new Country();
+                country.CountryName = countryName;
+                country.ContinentId = continentId;
+                country.Area = area;
 
-            db.Countries.InsertOnSubmit(country);
+                db.Countries.InsertOnSubmit(country);
 
-            db.SubmitChanges();
+                db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
 
@@ -200,17 +208,25 @@ namespace Homework3
 
         public void InsertCity(string cityName, int countryId, int populationNumber, int isCapital)
         {
-            WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+            try
+            {
+                WorldDbDataContext db = new WorldDbDataContext(_connectionString);
 
-            City city = new City();
-            city.CityName = cityName;
-            city.CountryId = countryId;
-            city.PopulationNumber = populationNumber;
-            city.IsCapital = Convert.ToBoolean(isCapital);
+                City city = new City();
+                city.CityName = cityName;
+                city.CountryId = countryId;
+                city.PopulationNumber = populationNumber;
+                city.IsCapital = Convert.ToBoolean(isCapital);
 
-            db.Cities.InsertOnSubmit(city);
+                db.Cities.InsertOnSubmit(city);
 
-            db.SubmitChanges();
+                db.SubmitChanges();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
 
@@ -299,6 +315,69 @@ namespace Homework3
                 InsertCity("Minas", 20, 38000, 0);
                 InsertCity("Saito", 20, 100000, 0);
 
+            }
+        }
+
+        #endregion
+
+
+        #region Updating Values
+
+        public void UpdateContinent(int id, string newContinentName)
+        {
+            try
+            {
+                WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+                Continent continent = db.Continents.FirstOrDefault(c => c.Id == id);
+
+                continent.ContinentName = newContinentName;
+
+                db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        public void UpdateCountry(int id, string newCountryName, int newContinentId, int newArea)
+        {
+            try
+            {
+                WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+                Country country = db.Countries.FirstOrDefault(c => c.Id == id);
+
+                if (newCountryName != String.Empty) country.CountryName = newCountryName;
+                if (newContinentId != -1) country.ContinentId = newContinentId;
+                if (newArea != -1) country.Area = newArea;
+
+                db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        public void UpdateCity(int id, string newCityName, int newCountryId, int newPopulation, int newIsCapital)
+        {
+            try
+            {
+                WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+                City city = db.Cities.FirstOrDefault(c => c.Id == id);
+
+                if (newCityName != String.Empty) city.CityName = newCityName;
+                if (newCountryId != -1) city.CountryId = newCountryId;
+                if (newPopulation != -1) city.PopulationNumber = newPopulation;
+                if (newIsCapital != -1) city.IsCapital = Convert.ToBoolean(newIsCapital);
+
+                db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
