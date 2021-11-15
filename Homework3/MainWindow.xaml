@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Homework3"
         mc:Ignorable="d"
-        Title="The World UI :)" Height="450" Width="800" Background="Gray">
+        Title="The World UI :)" Height="500" Width="800" Background="Gray">
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -16,28 +16,135 @@
 
         <StackPanel Grid.Column="0">
 
-            <StackPanel>
                 
-                <!--TABLE STRUCTURE AND INSERTS-->
+            <!--TABLE STRUCTURE AND INSERTS-->
 
-                <StackPanel Orientation="Vertical">
-                
-                    <Button Name="createTablesButton" Content="Create tables and insert values" 
-                            Width="190" Height="30" HorizontalAlignment="Left" Margin="10"
-                            Click="createTablesButton_Click"/>
+            <Button Name="createTablesButton" Content="Create tables and insert values" 
+                    Width="190" Height="30" HorizontalAlignment="Left" Margin="10"
+                    Click="createTablesButton_Click"/>
 
-                </StackPanel>
 
-            </StackPanel>
 
-            <StackPanel>
-                
-                <!--FOR CHECK BOXES-->
-                
-            </StackPanel>
             
+            <!--FOR COMBOBOX-->
+
+            <ComboBox Width="250" HorizontalAlignment="Left" Margin="10" Background="LightGray" Foreground="Black">
+                
+                <ComboBoxItem Name="showAllContinentsComboBoxItem" Content="Show all continents" 
+                              Background="LightGray" Foreground="DarkSlateGray" 
+                              Selected="showAllContinentsComboBoxItem_Selected"/>
+
+                <ComboBoxItem Name="showAllCountriesComboBoxItem" Content="Show all countries" 
+                              Background="LightGray" Foreground="DarkSlateGray" 
+                              Selected="showAllCountriesComboBoxItem_Selected"/>
+
+                <ComboBoxItem Name="showAllCapitalsComboBoxItem" Content="Show all capitals" 
+                              Background="LightGray" Foreground="DarkSlateGray" 
+                              Selected="showAllCapitalsComboBoxItem_Selected"/>
+
+                <ComboBoxItem Name="showTop5CountriesByAreaComboBoxItem" Content="Show top 5 countries by area" 
+                              Background="LightGray" Foreground="DarkSlateGray" 
+                              Selected="showTop5CountriesByAreaComboBoxItem_Selected"/>
+
+                <ComboBoxItem Name="showTop5CountriesByPopulationComboBoxItem" Content="Show top 5 countries by population" 
+                              Background="LightGray" Foreground="DarkSlateGray" 
+                              Selected="showTop5CountriesByPopulationComboBoxItem_Selected"/>
+
+                <ComboBoxItem Name="showTop5CitiesByPopulationComboBoxItem" Content="Show top 5 cities by population" 
+                              Background="LightGray" Foreground="DarkSlateGray" 
+                              Selected="showTop5CitiesByPopulationComboBoxItem_Selected"/>
+
+                <ComboBoxItem Name="showTop3ContinentsByAreaComboBoxItem" Content="Show top 3 continents by area" 
+                              Background="LightGray" Foreground="DarkSlateGray" 
+                              Selected="showTop3ContinentsByAreaComboBoxItem_Selected"/>
+
+                <ComboBoxItem Name="showTop3ContinentsByPopulationComboBoxItem" Content="Show top 3 continents by population" 
+                              Background="LightGray" Foreground="DarkSlateGray" 
+                              Selected="showTop3ContinentsByPopulationComboBoxItem_Selected"/>
+                
+            </ComboBox>
+            
+            
+            <!--INSERT UPDATE DELETE-->
+
+            <StackPanel Orientation="Horizontal">
+
+                <Button Name="insertButton" Content="INSERT" Margin="10" Width="100" Height="25" Click="insertButton_Click"/>
+                <Button Name="updateButton" Content="UPDATE" Margin="10" Width="100" Height="25" Click="updateButton_Click"/>
+                <Button Name="deleteButton" Content="DELETE" Margin="10" Width="100" Height="25" Click="deleteButton_Click"/>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+
+                <Button Name="continentsButton" Content="CONTINENTS" Margin="10" Width="100" Height="25" IsEnabled="False" Click="continentsButton_Click"/>
+                <Button Name="countriesButton" Content="COUNTRIES" Margin="10" Width="100" Height="25" IsEnabled="False" Click="countriesButton_Click"/>
+                <Button Name="citiesButton" Content="CITIES" Margin="10" Width="100" Height="25" IsEnabled="False" Click="citiesButton_Click"/>
+
+            </StackPanel>
+
+
+            <StackPanel Orientation="Horizontal">
+
+                <TextBox Name="textBox1" Width="200" Height="23" IsEnabled="False" Margin="10,0,0,0"/>
+                <Label Name="label1" Width="132" Content="N/A" Foreground="White" Margin="10"/>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+
+                <TextBox Name="textBox2" Width="200" Height="23" IsEnabled="False" Margin="10,0,0,0"/>
+                <Label Name="label2" Width="132" Content="N/A" Foreground="White" Margin="10"/>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+
+                <TextBox Name="textBox3" Width="200" Height="23" IsEnabled="False" Margin="10,0,0,0"/>
+                <Label Name="label3" Width="132" Content="N/A" Foreground="White" Margin="10"/>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+
+                <TextBox Name="textBox4" Width="200" Height="23" IsEnabled="False" Margin="10,0,0,0"/>
+                <Label Name="label4" Width="132" Content="N/A" Foreground="White" Margin="10"/>
+
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+
+                <TextBox Name="textBox5" Width="200" Height="23" IsEnabled="False" Margin="10,0,0,0"/>
+                <Label Name="label5" Width="132" Content="N/A" Foreground="White" Margin="10"/>
+
+            </StackPanel>
+
+            <Button Name="saveButton" Content="SAVE CHANGES" Margin="10" 
+                    Width="140" Height="25" Click="saveButton_Click" 
+                    HorizontalAlignment="Left" IsEnabled="False"/>
+
+
         </StackPanel>
+
+
+        
+        <!--########################################################-->
         
         
+        
+        
+        <DataGrid Grid.Column="1" Name="tableDataGrid"  Background="Gray" AutoGenerateColumns="True" 
+                  HeadersVisibility="All" Foreground="White" RowBackground="Gray" AlternatingRowBackground="Gray">
+
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="Gray"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+            </DataGrid.Resources>
+
+        </DataGrid>
+
+
     </Grid>
 </Window>

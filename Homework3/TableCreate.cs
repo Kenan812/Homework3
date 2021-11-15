@@ -107,22 +107,31 @@ namespace Homework3
             _connection.Open();
 
             InsertAllContinents();
-            InsertAllContinents();
-
-
+            InsertAllCountries();
+            InsertAllCities();
 
             _connection.Close();
         }
 
         #region Inserting Values
 
-        private void InsertContinent(string continentName)
+        public void InsertContinent(string continentName)
         {
-            string query = $"INSERT INTO Continents(ContinentName) VALUES('{continentName}')";
+            try
+            {
+                WorldDbDataContext db = new WorldDbDataContext(_connectionString);
 
-            SqlCommand command = new SqlCommand(query, _connection);
+                Continent continent = new Continent();
+                continent.ContinentName = continentName;
 
-            command.ExecuteNonQuery();
+                db.Continents.InsertOnSubmit(continent);
+
+                db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
 
@@ -141,19 +150,154 @@ namespace Homework3
         }
 
 
-        private void InsertCountry(string countryName, int continentId, float area)
+        public void InsertCountry(string countryName, int continentId, float area)
         {
-            string query = $"INSERT INTO Countries(CountryName, ContinentId, Area) VALUES('{countryName}', {continentId}, {area})";
+            WorldDbDataContext db = new WorldDbDataContext(_connectionString);
 
-            SqlCommand command = new SqlCommand(query, _connection);
+            Country country = new Country();
+            country.CountryName = countryName;
+            country.ContinentId = continentId;
+            country.Area = area;
 
-            command.ExecuteNonQuery();
+            db.Countries.InsertOnSubmit(country);
+
+            db.SubmitChanges();
         }
+
 
         private void InsertAllCountries()
         {
             if (_newCountries)
             {
+                InsertCountry("China", 1, 9597483);
+                InsertCountry("Japan", 1, 377975);
+                InsertCountry("Iraq", 1, 438317);
+                InsertCountry("Thailand", 1, 513120);
+
+                InsertCountry("Austria", 2, 83879);
+                InsertCountry("Azerbaijan", 2, 86600);
+                InsertCountry("Russia", 2, 17138547);
+                InsertCountry("United Kingdom", 2, 242495);
+
+                InsertCountry("Benin", 3, 114763);
+                InsertCountry("Mozambique", 3, 801590);
+                InsertCountry("Senegal", 3, 196722);
+                InsertCountry("Zambia", 3, 752618);
+
+                InsertCountry("Australia", 4, 7692843);
+
+                InsertCountry("Bahamas", 6, 12880);
+                InsertCountry("Canada", 6, 9985493);
+                InsertCountry("Panama", 6, 75517);
+                InsertCountry("Nicaragua", 6, 130370);
+
+                InsertCountry("Argentina", 7, 2784358);
+                InsertCountry("Chile", 7, 756950);
+                InsertCountry("Uruguay", 7, 176215);
+            }
+        }
+
+
+        public void InsertCity(string cityName, int countryId, int populationNumber, int isCapital)
+        {
+            WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+
+            City city = new City();
+            city.CityName = cityName;
+            city.CountryId = countryId;
+            city.PopulationNumber = populationNumber;
+            city.IsCapital = Convert.ToBoolean(isCapital);
+
+            db.Cities.InsertOnSubmit(city);
+
+            db.SubmitChanges();
+        }
+
+
+        private void InsertAllCities()
+        {
+            if (_newCities)
+            {
+
+                InsertCity("Beijing", 1, 22432484, 1);
+                InsertCity("Chengdu", 1, 16943012, 0);
+                InsertCity("Xian", 1, 8564737, 0);
+
+                InsertCity("Tokyo", 2, 14939605, 1);
+                InsertCity("Osaka", 2, 2843583, 0);
+                InsertCity("Fukuoka", 2, 1643864, 0);
+
+                InsertCity("Baghdad", 3, 77432853, 1);
+                InsertCity("Mosul", 3, 1743753, 0);
+                InsertCity("Ramadi", 3, 220000, 0);
+
+                InsertCity("Bangkok", 4, 83475217, 1);
+                InsertCity("Phuket", 4, 79000, 0);
+                InsertCity("Krabi", 4, 33000, 0);
+
+                InsertCity("Vienna", 5, 1700000, 1);
+                InsertCity("Graz", 5, 290000, 0);
+                InsertCity("Linz", 5, 190000, 0);
+
+                InsertCity("Baku", 6, 2300000, 1);
+                InsertCity("Sumqayit", 6, 360000, 0);
+                InsertCity("Ganja", 6, 340000, 0);
+
+                InsertCity("Moscow", 7, 12000000, 1);
+                InsertCity("Vladivostok", 7, 590000, 0);
+                InsertCity("Omsk", 7, 1200000, 0);
+
+                InsertCity("London", 8, 9000000, 1);
+                InsertCity("Livepool", 8, 470000, 0);
+                InsertCity("Bristol", 8, 430000, 0);
+
+                InsertCity("Porto-Novo", 9, 260000, 1);
+                InsertCity("Cotonou", 9, 2400000, 0);
+                InsertCity("Parakou", 9, 210000, 0);
+
+                InsertCity("Maputo", 10, 1100000, 1);
+                InsertCity("Pempa", 10, 200000, 0);
+                InsertCity("Matola", 10, 1000000, 0);
+
+                InsertCity("Dakar", 11, 1100000, 1);
+                InsertCity("Touba", 11, 530000, 0);
+                InsertCity("Tambacounda", 11, 79000, 0);
+
+                InsertCity("Lusaka", 12, 1700000, 1);
+                InsertCity("Ndola", 12, 450000, 0);
+                InsertCity("Kasama", 12, 100000, 0);
+
+                InsertCity("Canberra", 13, 1800000, 1);
+                InsertCity("Gold Cost", 13, 3000000, 0);
+                InsertCity("Darwin", 13, 130000, 0);
+
+                InsertCity("Nassau", 14, 270000, 1);
+                InsertCity("Coopers Town", 14, 680, 0);
+                InsertCity("Marsh Harbour", 14, 6300, 0);
+
+                InsertCity("Ottawa", 15, 930000, 1);
+                InsertCity("Toronto", 15, 3000000, 0);
+                InsertCity("Edmonton", 15, 970000, 0);
+
+                InsertCity("Panama City", 16, 880000, 1);
+                InsertCity("Tocumen", 16, 75000, 0);
+                InsertCity("David", 16, 83000, 0);
+
+                InsertCity("Managua", 17, 1100000, 1);
+                InsertCity("Leon", 17, 210000, 0);
+                InsertCity("Esteli", 17, 130000, 0);
+
+                InsertCity("Buenos Aires", 18, 2900000, 1);
+                InsertCity("Rosario", 18, 910000, 0);
+                InsertCity("Mendoza", 18, 110000, 0);
+
+                InsertCity("Santiago", 19, 6300000, 1);
+                InsertCity("Iquique", 19, 190000, 0);
+                InsertCity("Valparaiso", 19, 280000, 0);
+
+                InsertCity("Montevideo", 20, 300000, 1);
+                InsertCity("Minas", 20, 38000, 0);
+                InsertCity("Saito", 20, 100000, 0);
 
             }
         }
