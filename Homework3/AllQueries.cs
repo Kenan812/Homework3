@@ -22,11 +22,59 @@ namespace Homework3
         }
 
 
+        public IQueryable<Continent> GetContinentsByTypeSpecifically()
+        {
+            WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+
+            IQueryable<Continent> query = db.Continents.OrderBy(c => c.Id);
+
+            return query;
+        }
+
         public IQueryable GetAllCountries()
         {
             WorldDbDataContext db = new WorldDbDataContext(_connectionString);
 
             var query = db.Countries.OrderBy(c => c.Id).Select(c => new { c.Id, c.CountryName, c.Continent.ContinentName, c.Area });
+
+            return query;
+        }
+
+
+        public IQueryable GetCountryByContinent(string continentName)
+        {
+            WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+
+            var query = db.Countries.Where(c => c.Continent.ContinentName.Equals(continentName)).OrderBy(c => c.Id).Select(c => new { c.Id, c.CountryName, c.Area });
+
+            return query;
+        }
+
+
+        public IQueryable<Country> GetCountriesByTypeSpecifically()
+        {
+            WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+
+            IQueryable<Country> query = db.Countries.OrderBy(c => c.Id);
+
+            return query;
+        }
+
+        public IQueryable GetAllCities()
+        {
+            WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+
+            var query = db.Cities.OrderBy(c => c.Id).Select(c => new { c.Id, c.CityName, c.Country.CountryName, c.PopulationNumber, c.IsCapital });
+
+            return query;
+        }
+
+
+        public IQueryable GetCityByCountry(string countryName)
+        {
+            WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+
+            var query = db.Cities.Where(c => c.Country.CountryName.Equals(countryName)).OrderBy(c => c.Id).Select(c => new { c.Id, c.CityName, c.PopulationNumber, c.IsCapital });
 
             return query;
         }

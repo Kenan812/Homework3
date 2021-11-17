@@ -28,43 +28,66 @@
             
             <!--FOR COMBOBOX-->
 
-            <ComboBox Width="250" HorizontalAlignment="Left" Margin="10" Background="LightGray" Foreground="Black">
-                
-                <ComboBoxItem Name="showAllContinentsComboBoxItem" Content="Show all continents" 
-                              Background="LightGray" Foreground="DarkSlateGray" 
-                              Selected="showAllContinentsComboBoxItem_Selected"/>
-
-                <ComboBoxItem Name="showAllCountriesComboBoxItem" Content="Show all countries" 
-                              Background="LightGray" Foreground="DarkSlateGray" 
-                              Selected="showAllCountriesComboBoxItem_Selected"/>
-
-                <ComboBoxItem Name="showAllCapitalsComboBoxItem" Content="Show all capitals" 
-                              Background="LightGray" Foreground="DarkSlateGray" 
-                              Selected="showAllCapitalsComboBoxItem_Selected"/>
-
-                <ComboBoxItem Name="showTop5CountriesByAreaComboBoxItem" Content="Show top 5 countries by area" 
-                              Background="LightGray" Foreground="DarkSlateGray" 
-                              Selected="showTop5CountriesByAreaComboBoxItem_Selected"/>
-
-                <ComboBoxItem Name="showTop5CountriesByPopulationComboBoxItem" Content="Show top 5 countries by population" 
-                              Background="LightGray" Foreground="DarkSlateGray" 
-                              Selected="showTop5CountriesByPopulationComboBoxItem_Selected"/>
-
-                <ComboBoxItem Name="showTop5CitiesByPopulationComboBoxItem" Content="Show top 5 cities by population" 
-                              Background="LightGray" Foreground="DarkSlateGray" 
-                              Selected="showTop5CitiesByPopulationComboBoxItem_Selected"/>
-
-                <ComboBoxItem Name="showTop3ContinentsByAreaComboBoxItem" Content="Show top 3 continents by area" 
-                              Background="LightGray" Foreground="DarkSlateGray" 
-                              Selected="showTop3ContinentsByAreaComboBoxItem_Selected"/>
-
-                <ComboBoxItem Name="showTop3ContinentsByPopulationComboBoxItem" Content="Show top 3 continents by population" 
-                              Background="LightGray" Foreground="DarkSlateGray" 
-                              Selected="showTop3ContinentsByPopulationComboBoxItem_Selected"/>
-                
-            </ComboBox>
+            <StackPanel Orientation="Horizontal">
             
-            
+                <ComboBox Name="mainComboBox" Width="175" HorizontalAlignment="Left" Margin="10" Background="LightGray" Foreground="Black">
+                
+                    <ComboBoxItem Name="showAllContinentsComboBoxItem" Content="Show all continents" 
+                                  Background="LightGray" Foreground="DarkSlateGray" 
+                                  Selected="showAllContinentsComboBoxItem_Selected"/>
+
+                    <ComboBoxItem Name="showAllCountriesComboBoxItem" Content="Show all countries" 
+                                  Background="LightGray" Foreground="DarkSlateGray" 
+                                  Selected="showAllCountriesComboBoxItem_Selected"/>
+
+                    <ComboBoxItem Name="showAllCitiesComboBoxItem" Content="Show all cities" 
+                                  Background="LightGray" Foreground="DarkSlateGray" 
+                                  Selected="showAllCitiesComboBoxItem_Selected"/>
+
+                    <ComboBoxItem Name="showCountryByContinent" Content="Show countries by continent" 
+                                  Background="LightGray" Foreground="DarkSlateGray" 
+                                  Selected="showCountryByContinent_Selected"/>
+
+                    <ComboBoxItem Name="showCityByCountry" Content="Show cities by country" 
+                                  Background="LightGray" Foreground="DarkSlateGray" 
+                                  Selected="showCityByCountry_Selected"/>
+                    
+                    <ComboBoxItem Name="showAllCapitalsComboBoxItem" Content="Show all capitals" 
+                                  Background="LightGray" Foreground="DarkSlateGray" 
+                                  Selected="showAllCapitalsComboBoxItem_Selected"/>
+
+                    <ComboBoxItem Name="showTop5CountriesByAreaComboBoxItem" Content="Show top 5 countries by area" 
+                                  Background="LightGray" Foreground="DarkSlateGray" 
+                                  Selected="showTop5CountriesByAreaComboBoxItem_Selected"/>
+
+                    <ComboBoxItem Name="showTop5CountriesByPopulationComboBoxItem" Content="Show top 5 countries by population" 
+                                  Background="LightGray" Foreground="DarkSlateGray" 
+                                  Selected="showTop5CountriesByPopulationComboBoxItem_Selected"/>
+
+                    <ComboBoxItem Name="showTop5CitiesByPopulationComboBoxItem" Content="Show top 5 cities by population" 
+                                  Background="LightGray" Foreground="DarkSlateGray" 
+                                  Selected="showTop5CitiesByPopulationComboBoxItem_Selected"/>
+
+                    <ComboBoxItem Name="showTop3ContinentsByAreaComboBoxItem" Content="Show top 3 continents by area" 
+                                  Background="LightGray" Foreground="DarkSlateGray" 
+                                  Selected="showTop3ContinentsByAreaComboBoxItem_Selected"/>
+
+                    <ComboBoxItem Name="showTop3ContinentsByPopulationComboBoxItem" Content="Show top 3 continents by population" 
+                                  Background="LightGray" Foreground="DarkSlateGray" 
+                                  Selected="showTop3ContinentsByPopulationComboBoxItem_Selected"/>
+                
+                </ComboBox>
+
+                
+                <ComboBox Width="175" Name="choiseComboBox" HorizontalAlignment="Left" Margin="10" 
+                          Background="LightGray" Foreground="Black" IsEnabled="False" SelectionChanged="choiseComboBox_SelectionChanged">
+
+                    
+                    
+                </ComboBox>
+
+            </StackPanel>
+
             <!--INSERT UPDATE DELETE-->
 
             <StackPanel Orientation="Horizontal">

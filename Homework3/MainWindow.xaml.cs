@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Linq;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Homework3
 {
@@ -10,7 +14,7 @@ namespace Homework3
     public partial class MainWindow : Window
     {
         private string _connectionString = @"Data Source=(localdb)\ProjectsV13;Initial Catalog=World;Integrated Security=True";
-        private DataContext _db = new DataContext(@"Data Source=(localdb)\ProjectsV13;Initial Catalog=World;Integrated Security=True");
+        private WorldDbDataContext _db = new WorldDbDataContext(@"Data Source=(localdb)\ProjectsV13;Initial Catalog=World;Integrated Security=True");
         private TableCreate _tc;
         private AllQueries _allQueries;
 
@@ -37,6 +41,7 @@ namespace Homework3
         }
 
 
+
         #region Main Queries
 
         private void showAllContinentsComboBoxItem_Selected(object sender, RoutedEventArgs e)
@@ -47,6 +52,60 @@ namespace Homework3
         private void showAllCountriesComboBoxItem_Selected(object sender, RoutedEventArgs e)
         {
             tableDataGrid.ItemsSource = _allQueries.GetAllCountries();
+        }
+
+        private void showAllCitiesComboBoxItem_Selected(object sender, RoutedEventArgs e)
+        {
+            tableDataGrid.ItemsSource = _allQueries.GetAllCities();
+        }
+
+        private void showCountryByContinent_Selected(object sender, RoutedEventArgs e)
+        {
+            choiseComboBox.IsEnabled = true;
+
+            try
+            {
+                choiseComboBox.ItemsSource = _allQueries.GetContinentsByTypeSpecifically().Select(c => c.ContinentName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + ex.StackTrace, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void showCityByCountry_Selected(object sender, RoutedEventArgs e)
+        {
+            choiseComboBox.IsEnabled = true;
+
+            try
+            {
+                choiseComboBox.ItemsSource = _allQueries.GetCountriesByTypeSpecifically().Select(c => c.CountryName);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + ex.StackTrace, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void choiseComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            try
+            {
+                ComboBox cb = (sender as ComboBox);
+
+                if ((mainComboBox.SelectedItem as ComboBoxItem).Name == "showCountryByContinent")
+                    tableDataGrid.ItemsSource = _allQueries.GetCountryByContinent(cb.SelectedItem.ToString());
+
+                else if ((mainComboBox.SelectedItem as ComboBoxItem).Name == "showCityByCountry")
+                    tableDataGrid.ItemsSource = _allQueries.GetCityByCountry(cb.SelectedItem.ToString());
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n" + ex.StackTrace, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+           
+
         }
 
         private void showAllCapitalsComboBoxItem_Selected(object sender, RoutedEventArgs e)
@@ -107,8 +166,7 @@ namespace Homework3
 
         private void deleteButton_Click(object sender, RoutedEventArgs e)
         {
-            _isInsert = false;
-            _isUpdate = false;
+            BringToInitialCondition();
             _isDelete = true;
 
             continentsButton.IsEnabled = true;
@@ -163,7 +221,28 @@ namespace Homework3
                 label4.Content = "N/A";
                 label5.Content = "N/A";
             }
-            
+
+            else if (_isDelete)
+            {
+                label1.Content = "Continent id to delete";
+                textBox1.IsEnabled = true;
+
+                textBox2.Text = String.Empty;
+                textBox3.Text = String.Empty;
+                textBox4.Text = String.Empty;
+                textBox5.Text = String.Empty;
+
+                textBox2.IsEnabled = false;
+                textBox3.IsEnabled = false;
+                textBox4.IsEnabled = false;
+                textBox5.IsEnabled = false;
+
+                label2.Content = "N/A";
+                label3.Content = "N/A";
+                label4.Content = "N/A";
+                label5.Content = "N/A";
+            }
+
             saveButton.IsEnabled = true;
             _isContinents = true;
             _isCountries = false;
@@ -213,7 +292,28 @@ namespace Homework3
 
                 label5.Content = "N/A";
             }
-            
+
+            else if (_isDelete)
+            {
+                label1.Content = "Country id to delete";
+                textBox1.IsEnabled = true;
+
+                textBox2.Text = String.Empty;
+                textBox3.Text = String.Empty;
+                textBox4.Text = String.Empty;
+                textBox5.Text = String.Empty;
+
+                textBox2.IsEnabled = false;
+                textBox3.IsEnabled = false;
+                textBox4.IsEnabled = false;
+                textBox5.IsEnabled = false;
+
+                label2.Content = "N/A";
+                label3.Content = "N/A";
+                label4.Content = "N/A";
+                label5.Content = "N/A";
+            }
+
             saveButton.IsEnabled = true;
             _isCountries = true;
             _isContinents = false;
@@ -253,7 +353,27 @@ namespace Homework3
                 textBox4.IsEnabled = true;
                 label5.Content = "Is capital(1-yes/0-no)";
                 textBox5.IsEnabled = true;
+            }
 
+            else if (_isDelete)
+            {
+                label1.Content = "City id to delete";
+                textBox1.IsEnabled = true;
+
+                textBox2.Text = String.Empty;
+                textBox3.Text = String.Empty;
+                textBox4.Text = String.Empty;
+                textBox5.Text = String.Empty;
+
+                textBox2.IsEnabled = false;
+                textBox3.IsEnabled = false;
+                textBox4.IsEnabled = false;
+                textBox5.IsEnabled = false;
+
+                label2.Content = "N/A";
+                label3.Content = "N/A";
+                label4.Content = "N/A";
+                label5.Content = "N/A";
             }
 
             saveButton.IsEnabled = true;
@@ -261,7 +381,6 @@ namespace Homework3
             _isCountries = false;
             _isContinents = false;
         }
-
 
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
@@ -276,8 +395,16 @@ namespace Homework3
                 SaveUpdate();
             }
 
+            else if (_isDelete)
+            {
+                SaveDelete();
+            }
+
             BringToInitialCondition();
         }
+
+
+        #region Save Operations
 
         private void SaveInsert()
         {
@@ -345,7 +472,6 @@ namespace Homework3
                 }
             }
 
-
             else if (_isCities && textBox1.Text != String.Empty)
             {
                 try
@@ -374,6 +500,48 @@ namespace Homework3
 
 
         }
+
+        private void SaveDelete()
+        {
+            if (_isContinents && textBox1.Text != String.Empty)
+            {
+                try
+                {
+                    _tc.DeleteContinent(Int32.Parse(textBox1.Text));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            else if (_isCountries && textBox1.Text != String.Empty)
+            {
+                try
+                {
+                    _tc.DeleteCountry(Int32.Parse(textBox1.Text));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+            else if (_isCities && textBox1.Text != String.Empty)
+            {
+                try
+                {
+                    _tc.DeleteCity(Int32.Parse(textBox1.Text));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+
+        }
+
+        #endregion
 
 
         private void BringToInitialCondition()
@@ -410,6 +578,6 @@ namespace Homework3
             _isContinents = false;
         }
 
-
+        
     }
 }

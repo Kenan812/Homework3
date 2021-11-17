@@ -384,6 +384,69 @@ namespace Homework3
         #endregion
 
 
+        #region Deleting Values
+
+        public void DeleteContinent(int id)
+        {
+            try
+            {
+                WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+
+                Continent continent = db.Continents.FirstOrDefault(c => c.Id == id);
+
+                db.Continents.DeleteOnSubmit(continent);
+
+                db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        public void DeleteCountry(int id)
+        {
+            try
+            {
+                WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+
+                Country country = db.Countries.FirstOrDefault(c => c.Id == id);
+
+                db.Countries.DeleteOnSubmit(country);
+
+                db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        public void DeleteCity(int id)
+        {
+            try
+            {
+                WorldDbDataContext db = new WorldDbDataContext(_connectionString);
+
+                City city = db.Cities.FirstOrDefault(c => c.Id == id);
+
+                db.Cities.DeleteOnSubmit(city);
+
+                db.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+
+        #endregion
+
+
         #region Help Methods
 
         // Returns 'true' if query creates existing table
